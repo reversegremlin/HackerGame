@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Hacker : MonoBehaviour
 {
 
     //game config data
-    string[] level1Passworods = { "book", "quiet", "self", "password" };
+    string[] level1Passworods = { "book", "quiet", "self", "password", "library" };
     string[] level2Passworods = { "felony", "handcuffs", "prisoner", "detective" };
 
     int level;
@@ -108,14 +105,17 @@ public class Hacker : MonoBehaviour
 
         // two fixed passwords, for each difficulty
         //check the password, ask again or say congrats
+
         Terminal.ClearScreen();
         switch(level)
         {
             case 1:
-                password = level1Passworods[0];
+                int index1 = Random.Range(0, level1Passworods.Length);
+                password = level1Passworods[index1];
                 break;
             case 2:
-                password = level2Passworods[0];
+                int index2 = Random.Range(0, level2Passworods.Length);
+                password = level2Passworods[index2];
                 break;
             default:
                 Debug.LogError("invalid level");
