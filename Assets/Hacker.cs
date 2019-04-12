@@ -4,7 +4,7 @@ public class Hacker : MonoBehaviour
 {
 
     //game config data
-    string[] level1Passworods = { "book", "quiet", "self", "password", "library" };
+    string[] level1Passworods = { "book", "quiet", "shelf", "password", "library" };
     string[] level2Passworods = { "felony", "handcuffs", "prisoner", "detective" };
 
     int level;
@@ -49,31 +49,50 @@ public class Hacker : MonoBehaviour
 
     private void CheckPassword(string guess)
     {
-        if (level == 1)
+        if (guess == password)
         {
-            if (guess == password)
-            {
-                Terminal.WriteLine("Congratulations, you're a l33t h4x0r!");
-                currentScreen = Screen.Win;
+            DisplayWinScreen();
+            currentScreen = Screen.Win;
 
-            }
-            else
-            {
-                Terminal.WriteLine("Try again...");
-            }
-        } 
-        else if (level == 2)
+        }
+        else
         {
-            if (guess == password)
-            {
-                Terminal.WriteLine("Congratulations, you're a l33t h4x0r!");
-                currentScreen = Screen.Win;
+            AskForPassword();
+        }
+    }
 
-            }
-            else
-            {
-                Terminal.WriteLine("Try again...");
-            }
+    private void DisplayWinScreen()
+    {
+        currentScreen = Screen.Win;
+        Terminal.ClearScreen();
+        ShowLevelReward();
+    }
+
+    private void ShowLevelReward()
+    {
+        switch (level)
+        {
+            case 1:
+                Terminal.WriteLine("Have a book!");
+                Terminal.WriteLine(@"   
+     _______
+    /      /,
+   /      //
+  /______//
+ (______(/
+");
+                break;
+            case 2:
+                Terminal.WriteLine("Jailbreak!");
+                Terminal.WriteLine(@"
+    _*_ ....iiooiioo
+ __/_|_\__
+[(o)_R_(o)]
+");
+                break;
+            default:
+                Debug.LogError("invalid win");
+                break;
         }
     }
 
@@ -83,8 +102,7 @@ public class Hacker : MonoBehaviour
         if (isValidLevelNumber)
         {
             level = int.Parse(input);
-            StartGame();
-
+            AskForPassword();
 
         }  
         else if (input == "vanillabear")
@@ -98,7 +116,7 @@ public class Hacker : MonoBehaviour
         }
     }
 
-    private void StartGame()
+    private void AskForPassword()
     {
 
         currentScreen = Screen.Password;
@@ -107,23 +125,25 @@ public class Hacker : MonoBehaviour
         //check the password, ask again or say congrats
 
         Terminal.ClearScreen();
-        switch(level)
+        GenerateRandomPassword();
+        Terminal.WriteLine("Enter password, hint: " + password.Anagram());
+
+    }
+
+    private void GenerateRandomPassword()
+    {
+        switch (level)
         {
             case 1:
-                int index1 = Random.Range(0, level1Passworods.Length);
-                password = level1Passworods[index1];
+                password = level1Passworods[Random.Range(0, level1Passworods.Length)];
                 break;
             case 2:
-                int index2 = Random.Range(0, level2Passworods.Length);
-                password = level2Passworods[index2];
+                password = level2Passworods[Random.Range(0, level2Passworods.Length)];
                 break;
             default:
                 Debug.LogError("invalid level");
                 break;
         }
-
-        Terminal.WriteLine("Please enter password: ");
-
     }
 
     // Update is called once per frame
