@@ -6,6 +6,7 @@ public class Hacker : MonoBehaviour
     //game config data
     string[] level1Passworods = { "book", "quiet", "shelf", "password", "library" };
     string[] level2Passworods = { "felony", "handcuffs", "prisoner", "detective" };
+    string[] level3Passworods = { "supernova", "pulsar", "quasar", "andromeda" };
 
     int level;
     enum Screen { MainMenu, Password, Win };
@@ -24,8 +25,9 @@ public class Hacker : MonoBehaviour
         Terminal.ClearScreen();
         Terminal.WriteLine("W.O.P.R. © 1983");
         Terminal.WriteLine("What would you like to hack into?");
-        Terminal.WriteLine("Press 1 for local library");
+        Terminal.WriteLine("Press 1 for Local Library");
         Terminal.WriteLine("Press 2 for Police Station");
+        Terminal.WriteLine("Press 3 for NASA");
         Terminal.WriteLine("");
         Terminal.WriteLine("Enter your selection: ");
     }
@@ -83,22 +85,38 @@ public class Hacker : MonoBehaviour
 ");
                 break;
             case 2:
-                Terminal.WriteLine("Jailbreak!");
+                Terminal.WriteLine("Atlanta Police Department Access Granted");
                 Terminal.WriteLine(@"
     _*_ ....iiooiioo
  __/_|_\__
 [(o)_R_(o)]
 ");
                 break;
+            case 3:
+                Terminal.WriteLine("Mission Control Access Granted!");
+                Terminal.WriteLine(@"
+ _ __   __ _ ___  __ _ 
+| '_ \ / _` / __|/ _` |
+| | | | (_| \__ \ (_| |
+|_| |_|\__,_|___/\__,_|
+
+");
+                break;
             default:
                 Debug.LogError("invalid win");
                 break;
         }
+        RemindAboutMenu();
+    }
+
+    private void RemindAboutMenu()
+    {
+        Terminal.WriteLine("Type \"menu\" to return to restart");
     }
 
     private void RunMainMenu(string input)
     {
-        bool isValidLevelNumber = (input == "1" || input == "2");
+        bool isValidLevelNumber = (input == "1" || input == "2" || input == "3");
         if (isValidLevelNumber)
         {
             level = int.Parse(input);
@@ -113,6 +131,7 @@ public class Hacker : MonoBehaviour
         else
         {
             Terminal.WriteLine("SYNTAX ERROR LINE 1.");
+            RemindAboutMenu();
         }
     }
 
@@ -126,8 +145,8 @@ public class Hacker : MonoBehaviour
 
         Terminal.ClearScreen();
         GenerateRandomPassword();
+        RemindAboutMenu();
         Terminal.WriteLine("Enter password, hint: " + password.Anagram());
-
     }
 
     private void GenerateRandomPassword()
@@ -139,6 +158,9 @@ public class Hacker : MonoBehaviour
                 break;
             case 2:
                 password = level2Passworods[Random.Range(0, level2Passworods.Length)];
+                break;
+            case 3:
+                password = level3Passworods[Random.Range(0, level2Passworods.Length)];
                 break;
             default:
                 Debug.LogError("invalid level");
